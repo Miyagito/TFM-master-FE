@@ -1,37 +1,37 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { authState } from "../atoms/authAtom";
-import axios from "../api/axios/axiosConfig";
+import authServiceAPI from "../api/services/auth/authServicesAPI";
 
 const useAuth = () => {
   const [auth, setAuth] = useRecoilState(authState);
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post("/login", { username, password });
-      setAuth({ user: { role: response.data.role }, error: null });
+      const data = await authServiceAPI.login(username, password);
+      setAuth({ user: { role: data.role }, error: null });
     } catch (error) {
       setAuth({
         user: null,
-        error: error.response?.data?.error || "Error de inicio de sesión",
+        error: error.error || "Error de inicio de sesión",
       });
     }
   };
 
   const logout = async () => {
     try {
-      await axios.post("/logout");
+      await authServiceAPI.logout();
       setAuth({ user: null, error: null });
     } catch (error) {
-      console.log("Error al cerrar sesión:", error.response?.data?.error);
+      console.log("Error al cerrar sesión:", error.error);
     }
   };
 
   const checkSession = async () => {
     try {
-      const response = await axios.get("/verify-session");
-      if (response.data.user) {
-        setAuth({ user: { role: response.data.user.role }, error: null });
+      const data = await authServiceAPI.verifySession();
+      if (data.user) {
+        setAuth({ user: { role: data.user.role }, error: null });
       } else {
         setAuth({ user: null, error: "Sesión no válida" });
       }
