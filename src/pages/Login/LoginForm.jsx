@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import useAuth from "../../hooks/useAuth";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -16,11 +15,13 @@ import {
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [hasAttemptedLogin, setHasAttemptedLogin] = useState(false);
   const navigate = useNavigate();
   const { user, login, error } = useAuth();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setHasAttemptedLogin(true);
     await login(username, password);
   };
 
@@ -83,11 +84,11 @@ function LoginForm() {
               >
                 Iniciar sesión
               </Button>
-              {error && (
+              {/*  {error && hasAttemptedLogin && (
                 <Alert severity="error" sx={{ mt: 2 }}>
                   {error}
                 </Alert>
-              )}
+              )} */}
             </form>
           </Paper>
         </Container>

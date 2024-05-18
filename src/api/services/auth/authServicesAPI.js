@@ -19,9 +19,13 @@ const logout = async () => {
 
 const verifySession = async () => {
   try {
-    const response = await axios.get("/verify-session");
+    const token = localStorage.getItem("userToken");
+    const response = await axios.get("/verify-session", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return response.data;
   } catch (error) {
+    localStorage.removeItem("userToken"); // Si la verificación falla, eliminar token
     throw error.response.data;
   }
 };

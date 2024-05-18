@@ -1,117 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Box,
 } from "@mui/material";
-import axios from "../../api/axios/axiosConfig";
-import AddLawForm from "../Forms/AddLawForm";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import LawDisplay from "../ScrapedViews/LawDisplay";
 
-const LawsTable = () => {
-  const [laws, setLaws] = useState([]);
-  const [editLaw, setEditLaw] = useState(null);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchLaws = async () => {
-      /* const result = await axios.get("/api/laws");
-      setLaws(result.data); */
-    };
-    fetchLaws();
-  }, []);
-
-  const handleDelete = async (lawId) => {
-    await axios.delete(`/api/laws/${lawId}`);
-    setLaws(laws.filter((law) => law.id !== lawId));
+const LawsTable = ({ ley, loading, error }) => {
+  const customTransitionDuration = {
+    exit: 100,
   };
 
-  const handleEdit = (law) => {
-    setEditLaw(law);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSave = async () => {
-    /*   const response = await axios.put(`/api/laws/${editLaw.id}`, editLaw);
-    if (response.status === 200) {
-      const updatedLaws = laws.map((law) => {
-        if (law.id === editLaw.id) {
-          return editLaw;
-        }
-        return law;
-      });
-      setLaws(updatedLaws);
-    }
-    setOpen(false); */
-  };
-
-  const handleChange = (event) => {
-    setEditLaw({ ...editLaw, title: event.target.value });
-  };
+  if (loading) return <Typography>Cargando...</Typography>;
+  if (error) return <Typography color="error">Error: {error}</Typography>;
 
   return (
-    <Container>
-      <TableContainer component={Paper} elevation={3} sx={{ my: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Título</TableCell>
-              <TableCell align="right">Acciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {laws &&
-              laws.map((law) => (
-                <TableRow key={law.id}>
-                  <TableCell>{law.title}</TableCell>
-                  <TableCell align="right">
-                    <Button color="primary" onClick={() => handleEdit(law)}>
-                      Editar
-                    </Button>
-                    <Button color="error" onClick={() => handleDelete(law.id)}>
-                      Eliminar
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Editar Ley</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="title"
-            label="Título de la Ley"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={editLaw?.title || ""}
-            onChange={handleChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleSave}>Guardar</Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+    <Box sx={{ width: "100%", mt: 3, mb: 3 }}>
+      <Accordion
+        key={ley.id}
+        TransitionProps={{ timeout: customTransitionDuration }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id={`panel1a-header-${ley.id}`}
+        >
+          <Typography>{ley.nombre}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <LawDisplay ley={ley.contenido} />
+        </AccordionDetails>
+      </Accordion>
+    </Box>
   );
 };
 
