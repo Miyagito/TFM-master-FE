@@ -11,9 +11,8 @@ import LawDisplay from "../ScrapedViews/LawDisplay";
 import DeleteButtonLaw from "../Buttons/DeleteButtonLaw";
 import useLeyes from "../../hooks/useLeyes";
 
-const LawsTable = ({ ley, loading, error }) => {
+const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const { deleteLaw } = useLeyes();
-
   if (loading) return <Typography>Cargando...</Typography>;
   if (error) return <Typography color="error">Error: {error}</Typography>;
 
@@ -35,12 +34,14 @@ const LawsTable = ({ ley, loading, error }) => {
           }}
         >
           <Typography sx={{ flex: 1 }}>{ley.nombre}</Typography>
-          <DeleteButtonLaw
-            lawId={ley.id}
-            serviceCallBack={deleteLaw}
-            loading={loading}
-            error={error}
-          />
+          {showDeleteButton && (
+            <DeleteButtonLaw
+              lawId={ley.id}
+              serviceCallBack={deleteLaw}
+              loading={loading}
+              error={error}
+            />
+          )}
         </AccordionSummary>
         <AccordionDetails>
           <LawDisplay ley={ley.contenido} />

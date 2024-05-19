@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/Header/Header";
 import LawsTable from "../../components/Tables/LawsTable";
 import { useRecoilValue } from "recoil";
@@ -9,8 +9,13 @@ import { Container, Typography, Divider, Box } from "@mui/material";
 const HomePage = () => {
   const { loadLaws, loading, error } = useLeyes();
   const leyes = useRecoilValue(lawsState);
+
+  useEffect(() => {
+    loadLaws();
+  }, [loadLaws]);
+
   return (
-    <div>
+    <Box sx={{ height: "100%", overflowY: "auto" }}>
       <Header />
       <Container>
         <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
@@ -19,9 +24,23 @@ const HomePage = () => {
         <Box sx={{ my: 4 }}>
           <Divider variant="middle" />
         </Box>
-        <LawsTable leyes={leyes} loading={loading} error={error} />
+        {loading && <Typography>Cargando...</Typography>}
+        {error && <Typography color="error">Error: {error}</Typography>}
+        {leyes.length > 0 ? (
+          leyes.map((ley) => (
+            <LawsTable
+              showDeleteButton={false}
+              ley={ley}
+              loading={loading}
+              error={error}
+              key={ley.id}
+            />
+          ))
+        ) : (
+          <Typography variant="body1">No hay leyes disponibles</Typography>
+        )}
       </Container>
-    </div>
+    </Box>
   );
 };
 

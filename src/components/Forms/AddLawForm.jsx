@@ -79,14 +79,21 @@ const AddLawForm = () => {
       </Box>
       {loading && <LoadingComponent />}
       {scrapedLaws && (
-        <>
+        <Box
+          sx={{
+            margin: "20px",
+            overflowY: "auto",
+            maxHeight: "900px",
+            backgroundColor: "rgb(250, 250, 250)",
+          }}
+        >
           <LawDisplay ley={scrapedLaws} />
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 4 }}>
             <Button variant="contained" color="primary" onClick={handleAddLaw}>
               Agregar Ley
             </Button>
           </Box>
-        </>
+        </Box>
       )}
     </>
   );

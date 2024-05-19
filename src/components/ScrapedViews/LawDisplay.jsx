@@ -9,11 +9,12 @@ const LawDisplay = ({ ley }) => {
 
   return (
     <Box
-      style={{
+      sx={{
         margin: "20px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        backgroundColor: "rgb(250, 250, 250)",
       }}
     >
       {normalizedLawData.map((item, index) => (
@@ -24,6 +25,7 @@ const LawDisplay = ({ ley }) => {
             width: "100%",
             boxShadow: "none",
             border: "none",
+            backgroundColor: "rgb(250, 250, 250)",
           }}
         >
           <CardContent>

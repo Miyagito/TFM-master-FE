@@ -39,7 +39,13 @@ const AdminConsole = () => {
         {error && <Typography color="error">Error: {error}</Typography>}
         {leyes.length > 0 ? (
           leyes.map((ley) => (
-            <LawsTable ley={ley} loading={loading} error={error} key={ley.id} />
+            <LawsTable
+              showDeleteButton={true}
+              ley={ley}
+              loading={loading}
+              error={error}
+              key={ley.id}
+            />
           ))
         ) : (
           <Typography variant="body1">No hay leyes disponibles</Typography>
