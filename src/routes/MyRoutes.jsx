@@ -10,6 +10,7 @@ import { authState } from "../atoms/authAtom";
 import HomePage from "../pages/Home/HomePage";
 import AdminConsole from "../pages/Home/AdminConsole";
 import LoginForm from "../pages/Login/LoginForm";
+import PrintView from "../components/PrintView/PrintView";
 
 const MyRoutes = () => {
   const auth = useRecoilValue(authState);
@@ -32,6 +33,7 @@ const MyRoutes = () => {
             )
           }
         />
+        <Route path="/print-view" element={<PrintView />} />
       </Routes>
     </Router>
   );

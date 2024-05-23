@@ -1,11 +1,43 @@
-import React from "react";
-import { Typography, Card, CardContent, Box } from "@mui/material";
+import React, { forwardRef } from "react";
+import { Typography, Card, CardContent, Box, Checkbox } from "@mui/material";
 import { normalizeLawData } from "../../helpers/nomalizeData";
+import { selectedSectionsState } from "../../atoms/printAtom";
+import { useRecoilState } from "recoil";
 
-const LawDisplay = ({ ley }) => {
+const LawDisplay = forwardRef(({ ley, isPrintMode }, ref) => {
+  // Estado para mantener las secciones seleccionadas
+  const [selectedSections, setSelectedSections] = useRecoilState(
+    selectedSectionsState
+  );
+
   if (!ley) return <div>No hay leyes para mostrar</div>;
 
+  // Normaliza los datos de la ley
   const normalizedLawData = normalizeLawData(ley);
+
+  // Maneja el cambio de selección
+  const handleSelectionChange = (section) => {
+    const sectionIndex = selectedSections.findIndex(
+      (s) => s.index === section.index
+    );
+    let newSelections;
+    if (sectionIndex > -1) {
+      // Si ya está seleccionada, elimínala
+      newSelections = selectedSections.filter((s) => s.index !== section.index);
+    } else {
+      // Si no está seleccionada, agrégala incluyendo todo el contenido anidado
+      newSelections = [...selectedSections, section];
+    }
+    setSelectedSections(newSelections);
+    console.log(
+      "Selected Sections:",
+      newSelections.map((s) => ({
+        index: s.index,
+        content: s.contenido,
+        children: s.children,
+      }))
+    );
+  };
 
   return (
     <Box
@@ -29,6 +61,12 @@ const LawDisplay = ({ ley }) => {
           }}
         >
           <CardContent>
+            {isPrintMode && (
+              <Checkbox
+                checked={selectedSections.some((s) => s.index === index)}
+                onChange={() => handleSelectionChange({ ...item, index })}
+              />
+            )}
             <Typography
               variant="h5"
               component="h2"
@@ -45,9 +83,9 @@ const LawDisplay = ({ ley }) => {
             >
               {item.contenido}
             </Typography>
-            {item.children.length > 0 &&
+            {item.children &&
               item.children.map((content, idx) => (
-                <Typography key={idx} style={{ textAlign: "justify" }}>
+                <Typography key={idx} sx={{ textAlign: "justify" }}>
                   {content.contenido}
                 </Typography>
               ))}
@@ -56,6 +94,6 @@ const LawDisplay = ({ ley }) => {
       ))}
     </Box>
   );
-};
+});
 
 export default LawDisplay;
