@@ -5,15 +5,20 @@ import {
   AccordionDetails,
   Typography,
   Box,
-  Button,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PrintIcon from "@mui/icons-material/Print";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
 import LawDisplay from "../ScrapedViews/LawDisplay";
 import DeleteButtonLaw from "../Buttons/DeleteButtonLaw";
 import useLeyes from "../../hooks/useLeyes";
 import { useNavigate } from "react-router-dom";
 import { selectedSectionsState } from "../../atoms/printAtom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const [printMode, setPrintMode] = useState(false);
@@ -23,13 +28,19 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
 
   const resetSelections = () => setSelectedSections([]);
 
-  const togglePrintMode = () =>
-    printMode ? resetSelections() : setPrintMode(!printMode);
+  const togglePrintMode = () => {
+    if (printMode) resetSelections();
+    setPrintMode(!printMode);
+  };
 
-  const goToPrintView = () => printMode && navigate("/print-view");
+  const goToPrintView = () => {
+    if (printMode) navigate("/print-view");
+  };
 
   const goToPrintAllLaw = () => {
-    navigate("/print-all-law-view", { state: { ley: ley.contenido } });
+    if (!printMode) {
+      navigate("/print-all-law-view", { state: { ley: ley.contenido } });
+    }
   };
 
   const customTransitionDuration = {
@@ -39,6 +50,7 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
 
   if (loading) return <Typography>Cargando...</Typography>;
   if (error) return <Typography color="error">Error: {error}</Typography>;
+
   return (
     <Box sx={{ width: "100%", mt: 3, mb: 3 }}>
       <Accordion TransitionProps={{ timeout: customTransitionDuration }}>
@@ -53,24 +65,41 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
           }}
         >
           <Typography sx={{ flex: 1 }}>{ley.nombre}</Typography>
-          <Button onClick={togglePrintMode}>
-            {printMode ? "Cancel Print" : "Prepare for Print"}
-          </Button>
+          <Tooltip
+            title={printMode ? "Cancelar impresión" : "Preparar para imprimir"}
+          >
+            <IconButton onClick={togglePrintMode} color="primary">
+              {printMode ? <CancelIcon /> : <EditIcon />}
+            </IconButton>
+          </Tooltip>
           {printMode && (
-            <Button onClick={goToPrintView} sx={{ ml: 1 }}>
-              Print Customized Law View
-            </Button>
+            <Tooltip title="Imprimir vista personalizada de la ley">
+              <IconButton onClick={goToPrintView} color="success">
+                <PrintIcon />
+              </IconButton>
+            </Tooltip>
           )}
-          <Button onClick={() => goToPrintAllLaw(ley)} sx={{ ml: 1 }}>
-            Print All Law
-          </Button>
+          {!printMode && (
+            <Tooltip title="Imprimir toda la ley">
+              <IconButton
+                onClick={() => goToPrintAllLaw(ley)}
+                color="secondary"
+              >
+                <PrintIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           {showDeleteButton && (
             <DeleteButtonLaw
               lawId={ley.id}
               serviceCallBack={deleteLaw}
               loading={loading}
               error={error}
-            />
+            >
+              <Tooltip title="Eliminar ley">
+                <DeleteIcon />
+              </Tooltip>
+            </DeleteButtonLaw>
           )}
         </AccordionSummary>
         <AccordionDetails>

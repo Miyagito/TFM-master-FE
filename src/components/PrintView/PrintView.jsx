@@ -27,12 +27,16 @@ const PrintView = forwardRef((props, ref) => {
         height: "100%",
       }}
     >
-      <Button variant="outlined" onClick={handleBack} sx={{ mb: 4, mr: 2 }}>
-        Volver
-      </Button>
-      <Button variant="contained" onClick={handlePrint} sx={{ mb: 4 }}>
-        Imprimir
-      </Button>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", width: "100%", mb: 4 }}
+      >
+        <Button variant="outlined" onClick={handleBack} sx={{ mb: 4, mr: 2 }}>
+          Volver
+        </Button>
+        <Button variant="contained" onClick={handlePrint} sx={{ mb: 4 }}>
+          Imprimir
+        </Button>
+      </Box>
       {selectedSections.map((section, index) => (
         <Paper
           key={index}
