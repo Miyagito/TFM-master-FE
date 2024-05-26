@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 import { Typography, Card, CardContent, Box, Checkbox } from "@mui/material";
 import { normalizeLawData } from "../../helpers/nomalizeData";
 import { selectedSectionsState } from "../../atoms/printAtom";
@@ -9,8 +9,6 @@ const LawDisplay = forwardRef(({ ley, isPrintMode }, ref) => {
   const [selectedSections, setSelectedSections] = useRecoilState(
     selectedSectionsState
   );
-
-  if (!ley) return <div>No hay leyes para mostrar</div>;
 
   // Normaliza los datos de la ley
   const normalizedLawData = normalizeLawData(ley);
@@ -31,6 +29,7 @@ const LawDisplay = forwardRef(({ ley, isPrintMode }, ref) => {
     setSelectedSections(newSelections);
   };
 
+  if (!ley) return <div>No hay leyes para mostrar</div>;
   return (
     <Box
       sx={{

@@ -1,20 +1,21 @@
 import React, { forwardRef } from "react";
 import { selectedSectionsState } from "../../atoms/printAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { Typography, Box, Paper, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const PrintView = forwardRef((props, ref) => {
-  const selectedSections = useRecoilValue(selectedSectionsState);
+  const [selectedSections, setSelectedSections] = useRecoilState(
+    selectedSectionsState
+  );
   const navigate = useNavigate();
 
   const handleBack = () => {
+    setSelectedSections([]);
     navigate(-1);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   return (
     <Box
