@@ -11,6 +11,7 @@ import HomePage from "../pages/Home/HomePage";
 import AdminConsole from "../pages/Home/AdminConsole";
 import LoginForm from "../pages/Login/LoginForm";
 import PrintView from "../components/PrintView/PrintView";
+import PrintAllLawView from "../components/PrintView/PrintAllLawView";
 
 const MyRoutes = () => {
   const auth = useRecoilValue(authState);
@@ -34,6 +35,7 @@ const MyRoutes = () => {
           }
         />
         <Route path="/print-view" element={<PrintView />} />
+        <Route path="/print-All-Law-view" element={<PrintAllLawView />} />
       </Routes>
     </Router>
   );

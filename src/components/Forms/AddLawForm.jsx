@@ -9,20 +9,20 @@ import LawDisplay from "../ScrapedViews/LawDisplay";
 import leyesServicesAPI from "../../api/services/leyes/leyesServicesAPI";
 
 const AddLawForm = () => {
-  const [url, setUrl] = useState("");
+  const fixedUrl = "https://tu-url-estatica.com";
   const [lawName, setLawName] = useState("");
   const scrapedLaws = useRecoilValue(scrapedLawsState);
   const { handleScrapeLaw, loading, loadLaws } = useLeyes();
 
   const handlePreview = async () => {
-    if (url && lawName) {
+    if (lawName) {
       try {
-        await handleScrapeLaw(url, lawName);
+        await handleScrapeLaw(fixedUrl, lawName);
       } catch (error) {
         console.error("Error al hacer scraping de la ley:", error);
       }
     } else {
-      alert("Por favor, complete todos los campos.");
+      alert("Por favor, ingrese el nombre de la ley.");
     }
   };
 
@@ -34,7 +34,7 @@ const AddLawForm = () => {
 
     const lawData = {
       nombre: lawName,
-      url: url,
+      url: fixedUrl,
       contenido: scrapedLaws.data,
     };
 
@@ -51,15 +51,17 @@ const AddLawForm = () => {
   return (
     <>
       <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-        Buscar/Agregar nuevas de leyes
+        Buscar/Agregar nuevas leyes
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
         <TextField
           label="URL de la Ley"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          value={fixedUrl}
           fullWidth
           sx={{ maxWidth: 500, mr: 2 }}
+          InputProps={{
+            readOnly: true, // Hace el campo de texto de solo lectura
+          }}
         />
         <TextField
           label="Nombre de la Ley"

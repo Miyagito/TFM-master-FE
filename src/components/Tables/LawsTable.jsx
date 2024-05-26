@@ -12,7 +12,6 @@ import LawDisplay from "../ScrapedViews/LawDisplay";
 import DeleteButtonLaw from "../Buttons/DeleteButtonLaw";
 import useLeyes from "../../hooks/useLeyes";
 import { useNavigate } from "react-router-dom";
-
 const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const [printMode, setPrintMode] = useState(false);
   const { deleteLaw } = useLeyes();
@@ -30,6 +29,10 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
 
   const goToPrintView = () => {
     navigate("/print-view");
+  };
+
+  const goToPrintAllLaw = (ley) => {
+    navigate("/print-all-law-view", { state: { ley: ley.contenido } });
   };
 
   return (
@@ -50,7 +53,10 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
             {printMode ? "Cancel Print" : "Prepare for Print"}
           </Button>
           <Button onClick={goToPrintView} sx={{ ml: 1 }}>
-            Go to Print View
+            Print Customized Law View
+          </Button>
+          <Button onClick={() => goToPrintAllLaw(ley)} sx={{ ml: 1 }}>
+            Print All Law
           </Button>
           {showDeleteButton && (
             <DeleteButtonLaw
