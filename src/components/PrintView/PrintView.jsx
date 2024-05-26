@@ -5,7 +5,7 @@ import { Typography, Box, Paper, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const PrintView = forwardRef((props, ref) => {
-  const [selectedSections] = useRecoilValue(selectedSectionsState);
+  const selectedSections = useRecoilValue(selectedSectionsState);
   const navigate = useNavigate();
 
   const handleBack = () => {
