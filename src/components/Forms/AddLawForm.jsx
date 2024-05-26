@@ -9,7 +9,7 @@ import LawDisplay from "../ScrapedViews/LawDisplay";
 import leyesServicesAPI from "../../api/services/leyes/leyesServicesAPI";
 
 const AddLawForm = () => {
-  const fixedUrl = "https://tu-url-estatica.com";
+  const fixedUrl = "https://www.boe.es/buscar/boe.php";
   const [lawName, setLawName] = useState("");
   const scrapedLaws = useRecoilValue(scrapedLawsState);
   const { handleScrapeLaw, loading, loadLaws } = useLeyes();
@@ -60,7 +60,7 @@ const AddLawForm = () => {
           fullWidth
           sx={{ maxWidth: 500, mr: 2 }}
           InputProps={{
-            readOnly: true, // Hace el campo de texto de solo lectura
+            readOnly: true,
           }}
         />
         <TextField

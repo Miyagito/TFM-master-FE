@@ -15,7 +15,7 @@ const PrintAllLawView = forwardRef((props, ref) => {
     if (!ley) {
       // Si no hay ley disponible, redirige o muestra un mensaje
       console.log("No hay ley proporcionada, redirigiendo...");
-      navigate("/"); // Ajusta la ruta según sea necesario
+      navigate("/");
     }
   }, [ley, navigate]);
 
@@ -52,45 +52,46 @@ const PrintAllLawView = forwardRef((props, ref) => {
           Imprimir
         </Button>
       </Box>
-
-      {normalizedLawData.map((item, index) => (
-        <Card
-          ref={ref}
-          key={index}
-          style={{
-            marginBottom: "10px",
-            width: "100%",
-            boxShadow: "none",
-            border: "none",
-            backgroundColor: "rgb(250, 250, 250)",
-          }}
-        >
-          <CardContent>
-            <Typography
-              variant="h5"
-              component="h2"
-              style={{
-                textAlign:
-                  item.tipo === "titulo" ||
-                  item.tipo === "titulo_num" ||
-                  item.tipo === "titulo_tit" ||
-                  item.tipo === "capitulo_num" ||
-                  item.tipo === "capitulo_tit"
-                    ? "center"
-                    : "left",
-              }}
-            >
-              {item.contenido}
-            </Typography>
-            {item.children &&
-              item.children.map((content, idx) => (
-                <Typography key={idx} sx={{ textAlign: "justify" }}>
-                  {content.contenido}
-                </Typography>
-              ))}
-          </CardContent>
-        </Card>
-      ))}
+      <Box sx={{ overflowY: "auto", maxHeight: "calc(100vh - 100px)" }}>
+        {normalizedLawData.map((item, index) => (
+          <Card
+            ref={ref}
+            key={index}
+            style={{
+              marginBottom: "10px",
+              width: "100%",
+              boxShadow: "none",
+              border: "none",
+              backgroundColor: "rgb(250, 250, 250)",
+            }}
+          >
+            <CardContent>
+              <Typography
+                variant="h5"
+                component="h2"
+                style={{
+                  textAlign:
+                    item.tipo === "titulo" ||
+                    item.tipo === "titulo_num" ||
+                    item.tipo === "titulo_tit" ||
+                    item.tipo === "capitulo_num" ||
+                    item.tipo === "capitulo_tit"
+                      ? "center"
+                      : "left",
+                }}
+              >
+                {item.contenido}
+              </Typography>
+              {item.children &&
+                item.children.map((content, idx) => (
+                  <Typography key={idx} sx={{ textAlign: "justify" }}>
+                    {content.contenido}
+                  </Typography>
+                ))}
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
     </Box>
   );
 });
