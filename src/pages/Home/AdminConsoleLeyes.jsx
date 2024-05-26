@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 import AddLawForm from "../../components/Forms/AddLawForm";
 import LawsTable from "../../components/Tables/LawsTable";
-import { Container, Typography, Divider, Box } from "@mui/material";
+import { Container, Typography, Divider, Box, Button } from "@mui/material";
 import Header from "../../components/Header/Header";
 import useLeyes from "../../hooks/useLeyes";
 import { useRecoilValue } from "recoil";
 import { lawsState } from "../../atoms/leyesAtom";
+import { useNavigate } from "react-router-dom";
 
 const AdminConsole = () => {
   const { loadLaws, loading, error } = useLeyes();
   const leyes = useRecoilValue(lawsState);
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
     loadLaws();
@@ -25,9 +31,22 @@ const AdminConsole = () => {
     >
       <Header />
       <Container>
-        <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
-          Administración de Leyes
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: 4,
+            mb: 2,
+          }}
+        >
+          <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
+            Administración de Leyes
+          </Typography>
+          <Button variant="outlined" onClick={handleBack}>
+            Volver
+          </Button>
+        </Box>
         <AddLawForm />
         <Box sx={{ my: 4 }}>
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>

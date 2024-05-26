@@ -1,45 +1,65 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { Box, Card, CardContent, Typography, Grid } from "@mui/material";
 import Header from "../../components/Header/Header";
-import LawsTable from "../../components/Tables/LawsTable";
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import useLeyes from "../../hooks/useLeyes";
-import { lawsState } from "../../atoms/leyesAtom";
-import { Container, Typography, Divider, Box } from "@mui/material";
+import { authState } from "../../atoms/authAtom";
 
 const HomePage = () => {
-  const { loadLaws, loading, error } = useLeyes();
-  const leyes = useRecoilValue(lawsState);
+  const auth = useRecoilValue(authState);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    loadLaws();
-  }, [loadLaws]);
+  const handleNavigateToLeyes = () => {
+    if (auth.user) {
+      if (auth.user.role === "admin") {
+        navigate("/admin-console-leyes");
+      } else {
+        navigate("/user-console-leyes");
+      }
+    }
+  };
 
   return (
-    <Box sx={{ height: "100%", overflowY: "auto" }}>
+    <Box>
       <Header />
-      <Container>
-        <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
-          Lista de Leyes
-        </Typography>
-        <Box sx={{ my: 4 }}>
-          <Divider variant="middle" />
-        </Box>
-        {loading && <Typography>Cargando...</Typography>}
-        {error && <Typography color="error">Error: {error}</Typography>}
-        {leyes.length > 0 ? (
-          leyes.map((ley) => (
-            <LawsTable
-              showDeleteButton={false}
-              ley={ley}
-              loading={loading}
-              error={error}
-              key={ley.id}
-            />
-          ))
-        ) : (
-          <Typography variant="body1">No hay leyes disponibles</Typography>
-        )}
-      </Container>
+      <Box
+        sx={{
+          flexGrow: 1,
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              onClick={handleNavigateToLeyes}
+              sx={{ bgcolor: "primary.main", color: "primary.contrastText" }}
+            >
+              <CardContent>
+                <Typography variant="h4" component="div" align="center">
+                  Leyes
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card
+              sx={{
+                bgcolor: "secondary.main",
+                color: "secondary.contrastText",
+              }}
+            >
+              <CardContent>
+                <Typography variant="h4" component="div" align="center">
+                  Oposiciones
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };

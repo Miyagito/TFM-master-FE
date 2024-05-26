@@ -7,11 +7,12 @@ import {
 } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { authState } from "../atoms/authAtom";
-import HomePage from "../pages/Home/HomePage";
-import AdminConsole from "../pages/Home/AdminConsole";
+import UserConsoleLeyes from "../pages/Home/UserConsoleLeyes";
+import AdminConsoleLeyes from "../pages/Home/AdminConsoleLeyes";
 import LoginForm from "../pages/Login/LoginForm";
 import PrintView from "../components/PrintView/PrintView";
 import PrintAllLawView from "../components/PrintView/PrintAllLawView";
+import Home from "../pages/Home/HomePage";
 
 const MyRoutes = () => {
   const auth = useRecoilValue(authState);
@@ -22,20 +23,12 @@ const MyRoutes = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route
           path="/"
-          element={
-            auth.user ? (
-              auth.user.role === "admin" ? (
-                <AdminConsole />
-              ) : (
-                <HomePage />
-              )
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
+          element={auth.user ? <Home /> : <Navigate to="/login" replace />}
         />
         <Route path="/print-view" element={<PrintView />} />
-        <Route path="/print-All-Law-view" element={<PrintAllLawView />} />
+        <Route path="/print-all-law-view" element={<PrintAllLawView />} />
+        <Route path="/admin-console-leyes" element={<AdminConsoleLeyes />} />
+        <Route path="/user-console-leyes" element={<UserConsoleLeyes />} />
       </Routes>
     </Router>
   );
