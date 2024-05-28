@@ -10,6 +10,7 @@ const useOposiciones = () => {
   const [oposiciones, setOposiciones] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [response, setResponse] = useState(null);
 
   const loadOposiciones = useCallback(async () => {
     setLoading(true);
@@ -50,7 +51,9 @@ const useOposiciones = () => {
   const handleDeleteOposicion = async (id) => {
     setLoading(true);
     try {
-      await deleteOposicion(id);
+      const response = await deleteOposicion(id);
+      console.log(response, "response");
+      setResponse(response);
       await loadOposiciones(); // Remove the deleted item from the list
     } catch (error) {
       setError("Error al eliminar la oposición: " + error.message);
@@ -71,6 +74,7 @@ const useOposiciones = () => {
     handleUpdateOposicion,
     handleDeleteOposicion,
     loadOposiciones,
+    response,
   };
 };
 

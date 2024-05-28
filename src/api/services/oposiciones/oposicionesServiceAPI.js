@@ -36,7 +36,7 @@ export const updateOposicion = async (id, oposicionData) => {
 export const deleteOposicion = async (id) => {
   try {
     const response = await axios.delete(`${API_URL}/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     throw error.response.data;
   }

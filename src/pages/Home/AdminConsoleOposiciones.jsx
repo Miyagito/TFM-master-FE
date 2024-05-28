@@ -20,7 +20,7 @@ const AdminConsoleOposiciones = () => {
         }}
       >
         <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
-          Administración de Leyes
+          Administración de Oposiciones
         </Typography>
         <OpositionsTable />
       </Box>
