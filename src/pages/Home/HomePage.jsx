@@ -24,7 +24,7 @@ const HomePage = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ overflow: "visible", height: "100%" }}>
       <Header />
       <Box
         sx={{
