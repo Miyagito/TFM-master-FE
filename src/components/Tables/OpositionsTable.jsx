@@ -25,7 +25,7 @@ const OpositionsTable = () => {
   if (error) return <div>Ups... algo salió mal: {error}</div>;
 
   return (
-    <Box sx={{ width: "100%", mt: 3, mb: 3 }}>
+    <Box sx={{ width: "100%", mt: 3, mb: 3, overflow: "auto", height: "100%" }}>
       {oposiciones.map((oposition) => (
         <Accordion key={oposition.id}>
           <AccordionSummary

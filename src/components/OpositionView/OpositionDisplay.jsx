@@ -8,10 +8,7 @@ import { grey, red } from "@mui/material/colors";
 
 const OpositionDisplay = ({ oposition }) => {
   return (
-    <Paper
-      elevation={3}
-      sx={{ p: 3, flexGrow: 1, overflow: "hidden", maxWidth: "100%" }}
-    >
+    <Paper elevation={3} sx={{ p: 2, flexGrow: 1 }}>
       <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
         Detalles de la Oposición
       </Typography>
