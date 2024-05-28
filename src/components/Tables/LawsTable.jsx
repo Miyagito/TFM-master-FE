@@ -52,7 +52,15 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   if (error) return <Typography color="error">Error: {error}</Typography>;
 
   return (
-    <Box sx={{ width: "100%", mt: 3, mb: 3 }}>
+    <Box
+      sx={{
+        width: "100%",
+        mt: 3,
+        mb: 3,
+        paddingLeft: "24px",
+        paddingRight: "24px",
+      }}
+    >
       <Accordion TransitionProps={{ timeout: customTransitionDuration }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

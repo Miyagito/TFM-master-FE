@@ -19,6 +19,10 @@ const HomePage = () => {
     }
   };
 
+  const handleNavigateToOpostionForm = () => {
+    navigate("/admin-console-oposition");
+  };
+
   return (
     <Box>
       <Header />
@@ -46,6 +50,7 @@ const HomePage = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Card
+              onClick={handleNavigateToOpostionForm}
               sx={{
                 bgcolor: "secondary.main",
                 color: "secondary.contrastText",

@@ -13,6 +13,8 @@ import LoginForm from "../pages/Login/LoginForm";
 import PrintView from "../components/PrintView/PrintView";
 import PrintAllLawView from "../components/PrintView/PrintAllLawView";
 import Home from "../pages/Home/HomePage";
+import AddOpositionForm from "../components/Forms/AddOpositionForm";
+import AdminConsoleOposiciones from "../pages/Home/AdminConsoleOposiciones";
 
 const MyRoutes = () => {
   const auth = useRecoilValue(authState);
@@ -29,6 +31,11 @@ const MyRoutes = () => {
         <Route path="/print-all-law-view" element={<PrintAllLawView />} />
         <Route path="/admin-console-leyes" element={<AdminConsoleLeyes />} />
         <Route path="/user-console-leyes" element={<UserConsoleLeyes />} />
+        <Route path="/add-oposition-form" element={<AddOpositionForm />} />
+        <Route
+          path="/admin-console-oposition"
+          element={<AdminConsoleOposiciones />}
+        />
       </Routes>
     </Router>
   );
