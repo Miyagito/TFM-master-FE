@@ -35,12 +35,12 @@ const AdminConsole = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
             mt: 4,
             mb: 2,
           }}
         >
-          <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
+          <Typography variant="h4" sx={{ mt: 4, mb: 10, mr: 10 }}>
             Administración de Leyes
           </Typography>
           <Button variant="outlined" onClick={handleBack}>

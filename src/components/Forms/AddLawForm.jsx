@@ -50,8 +50,8 @@ const AddLawForm = () => {
 
   return (
     <>
-      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-        Buscar/Agregar nuevas leyes
+      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 4 }}>
+        Buscar leyes
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
         <TextField

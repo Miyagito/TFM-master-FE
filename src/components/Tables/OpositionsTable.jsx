@@ -77,7 +77,13 @@ const OpositionsTable = () => {
 
   return (
     <Box
-      sx={{ width: "100%", mt: 3, mb: 3, overflow: "visible", height: "100%" }}
+      sx={{
+        maxWidth: "1200px",
+        mt: 3,
+        mb: 3,
+        overflow: "visible",
+        height: "100%",
+      }}
     >
       {oposiciones.map((oposition) => (
         <Accordion key={oposition.id}>
