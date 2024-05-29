@@ -15,6 +15,7 @@ import PrintAllLawView from "../components/PrintView/PrintAllLawView";
 import Home from "../pages/Home/HomePage";
 import AddOpositionForm from "../components/Forms/AddOpositionForm";
 import AdminConsoleOposiciones from "../pages/Home/AdminConsoleOposiciones";
+import PrintOpositionView from "../components/PrintView/PrintOpsitionView";
 
 const MyRoutes = () => {
   const auth = useRecoilValue(authState);
@@ -36,6 +37,7 @@ const MyRoutes = () => {
           path="/admin-console-oposition"
           element={<AdminConsoleOposiciones />}
         />
+        <Route path="/print-Oposition" element={<PrintOpositionView />} />
       </Routes>
     </Router>
   );

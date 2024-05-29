@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Paper, Grid, Link, IconButton, Box } from "@mui/material";
 import ReactQuill from "react-quill";
 import PublicIcon from "@mui/icons-material/Public"; // Icono para URLs
 import EventIcon from "@mui/icons-material/Event"; // Icono para fechas
 import PeopleIcon from "@mui/icons-material/People"; // Icono para número de plazas
-import { grey, red } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 
-const OpositionDisplay = ({ oposition }) => {
+const OpositionDisplay = ({ oposition, printMode }) => {
+  useEffect(() => {
+    if (printMode) {
+      console.log("Preparando para imprimir:", oposition.nombre);
+      // Aquí podrías manipular el DOM o hacer cambios de estilo si fuera necesario antes de imprimir
+    }
+  }, [printMode, oposition]);
+
   return (
     <Paper elevation={3} sx={{ p: 2, flexGrow: 1 }}>
       <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>

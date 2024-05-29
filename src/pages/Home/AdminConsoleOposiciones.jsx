@@ -32,7 +32,7 @@ const AdminConsoleOposiciones = () => {
           }}
         >
           <Typography variant="h4" sx={{ mt: 4, mb: 4, mr: 10 }}>
-            Administración de Leyes
+            Administración de Oposiciones
           </Typography>
           <Button variant="outlined" onClick={handleBack}>
             Volver

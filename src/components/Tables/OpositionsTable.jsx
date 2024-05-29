@@ -22,8 +22,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useOposiciones from "../../hooks/useOposiciones";
 import OpositionDisplay from "../OpositionView/OpositionDisplay";
+import { useNavigate } from "react-router-dom";
 
 const OpositionsTable = () => {
+  const navigate = useNavigate();
   const {
     handleDeleteOposicion,
     oposiciones,
@@ -40,7 +42,14 @@ const OpositionsTable = () => {
     severity: "",
   });
 
-  const handleDeleteClick = (id) => {
+  const handlePrint = (oposition) => {
+    navigate("/print-Oposition", {
+      state: { oposition: oposition },
+    });
+  };
+
+  const handleDeleteClick = (e, id) => {
+    e.stopPropagation();
     setOpenDialog(true);
     setDeleteId(id);
   };
@@ -74,6 +83,8 @@ const OpositionsTable = () => {
 
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>Ups... algo salió mal: {error}</div>;
+  if (oposiciones.length < 1)
+    return <div>No hay Oposiciones para mostrar...</div>;
 
   return (
     <Box
@@ -104,14 +115,14 @@ const OpositionsTable = () => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Imprimir temario">
-              <IconButton color="success">
+              <IconButton onClick={() => handlePrint(oposition)}>
                 <PrintIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Eliminar oposición">
               <IconButton
                 color="error"
-                onClick={() => handleDeleteClick(oposition.id)}
+                onClick={(e) => handleDeleteClick(e, oposition.id)}
               >
                 <DeleteIcon />
               </IconButton>
