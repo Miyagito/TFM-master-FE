@@ -19,8 +19,12 @@ const HomePage = () => {
     }
   };
 
-  const handleNavigateToOpostionForm = () => {
-    navigate("/admin-console-oposition");
+  const handleNavigateToOpositionForm = () => {
+    if (auth.user && auth.user.role === "admin") {
+      navigate("/admin-console-oposition", { state: { isAdmin: true } });
+    } else {
+      navigate("/admin-console-oposition", { state: { isAdmin: false } });
+    }
   };
 
   return (
@@ -50,7 +54,7 @@ const HomePage = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <Card
-              onClick={handleNavigateToOpostionForm}
+              onClick={handleNavigateToOpositionForm}
               sx={{
                 bgcolor: "secondary.main",
                 color: "secondary.contrastText",

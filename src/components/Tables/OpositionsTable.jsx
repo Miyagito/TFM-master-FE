@@ -24,7 +24,7 @@ import OpositionDisplay from "../OpositionView/OpositionDisplay";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 
-const OpositionsTable = () => {
+const OpositionsTable = ({ isAdmin }) => {
   const navigate = useNavigate();
   const {
     handleDeleteOposicion,
@@ -116,27 +116,31 @@ const OpositionsTable = () => {
             }}
           >
             <Typography sx={{ flex: 1 }}>{oposition.nombre}</Typography>
-            <Tooltip title="Editar Oposición">
-              <IconButton
-                color="primary"
-                onClick={(e) => handleEditOposition(e, oposition)}
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+            {isAdmin && (
+              <Tooltip title="Editar Oposición">
+                <IconButton
+                  color="primary"
+                  onClick={(e) => handleEditOposition(e, oposition)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            )}
             <Tooltip title="Imprimir temario">
               <IconButton onClick={() => handlePrint(oposition)}>
                 <PrintIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Eliminar oposición">
-              <IconButton
-                color="error"
-                onClick={(e) => handleDeleteClick(e, oposition.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+            {isAdmin && (
+              <Tooltip title="Eliminar oposición">
+                <IconButton
+                  color="error"
+                  onClick={(e) => handleDeleteClick(e, oposition.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </AccordionSummary>
           <AccordionDetails>
             <OpositionDisplay oposition={oposition} />

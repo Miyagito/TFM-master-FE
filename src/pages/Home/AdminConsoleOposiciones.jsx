@@ -2,9 +2,11 @@ import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Header from "../../components/Header/Header";
 import OpositionsTable from "../../components/Tables/OpositionsTable";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AdminConsoleOposiciones = () => {
+  const location = useLocation();
+  const { isAdmin } = location.state || { isAdmin: false };
   const navigate = useNavigate();
 
   const handleAddOposition = () => {
@@ -52,7 +54,7 @@ const AdminConsoleOposiciones = () => {
           </Button>
         </Box>
 
-        <OpositionsTable />
+        <OpositionsTable isAdmin={isAdmin} />
       </Box>
     </Box>
   );
