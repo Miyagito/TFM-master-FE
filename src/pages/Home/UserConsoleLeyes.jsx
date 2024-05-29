@@ -36,6 +36,7 @@ const UserConsoleLeyes = () => {
           <Typography variant="h4" sx={{ mt: 4, mb: 4 }}>
             Lista de Leyes
           </Typography>
+
           <Button variant="outlined" onClick={handleBack}>
             Volver
           </Button>

@@ -6,6 +6,7 @@ import {
   Container,
   Grid,
   Alert,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
@@ -28,6 +29,10 @@ const AddOpositionForm = () => {
   const { error, loading, handleAddOposicion } = useOposiciones();
   const handleChange = (e) => {
     setOpositionData({ ...opositionData, [e.target.name]: e.target.value });
+  };
+
+  const handleBack = () => {
+    navigate(-1);
   };
 
   const handleTemarioChange = (value) => {
@@ -76,13 +81,30 @@ const AddOpositionForm = () => {
 
   return (
     <Container maxWidth="md" overflowY="auto" height="100vh">
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{ my: 4, textAlign: "center" }}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          p: 2,
+          alignItems: "center",
+        }}
       >
-        Añadir Nueva Oposición
-      </Typography>
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{ my: 4, textAlign: "center" }}
+        >
+          Añadir Nueva Oposición
+        </Typography>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleBack}
+          sx={{ ml: 2 }}
+        >
+          Volver
+        </Button>
+      </Box>
       {inputError && <Alert severity="error">{inputError}</Alert>}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>

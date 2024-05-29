@@ -7,12 +7,18 @@ import { scrapedLawsState } from "../../atoms/leyesAtom";
 import LoadingComponent from "../Loading/Loading";
 import LawDisplay from "../ScrapedViews/LawDisplay";
 import leyesServicesAPI from "../../api/services/leyes/leyesServicesAPI";
+import { useNavigate } from "react-router-dom";
 
 const AddLawForm = () => {
   const fixedUrl = "https://www.boe.es/buscar/boe.php";
   const [lawName, setLawName] = useState("");
   const scrapedLaws = useRecoilValue(scrapedLawsState);
   const { handleScrapeLaw, loading, loadLaws } = useLeyes();
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
 
   const handlePreview = async () => {
     if (lawName) {
@@ -93,6 +99,14 @@ const AddLawForm = () => {
           <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 4 }}>
             <Button variant="contained" color="primary" onClick={handleAddLaw}>
               Agregar Ley
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleBack}
+              sx={{ ml: 2 }}
+            >
+              Volver
             </Button>
           </Box>
         </Box>
