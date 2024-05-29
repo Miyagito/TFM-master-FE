@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import useOposiciones from "../../hooks/useOposiciones";
 import {
   TextField,
   Button,
@@ -8,13 +12,16 @@ import {
   Alert,
   Box,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import useOposiciones from "../../hooks/useOposiciones";
 
 const AddOpositionForm = () => {
   const [inputError, setInputError] = useState("");
+  const navigate = useNavigate();
+  const { error, loading, handleAddOposicion, handleUpdateOposicion } =
+    useOposiciones();
+  const location = useLocation();
+  const { oposition } = location.state || {
+    oposition: null,
+  };
   const [opositionData, setOpositionData] = useState({
     nombre: "",
     url_publicacion: "",
@@ -25,8 +32,7 @@ const AddOpositionForm = () => {
     url_instancias: "",
     numero_plazas: "",
   });
-  const navigate = useNavigate();
-  const { error, loading, handleAddOposicion } = useOposiciones();
+
   const handleChange = (e) => {
     setOpositionData({ ...opositionData, [e.target.name]: e.target.value });
   };
@@ -41,25 +47,51 @@ const AddOpositionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !opositionData.nombre ||
-      !opositionData.url_publicacion ||
-      !opositionData.fecha_publicacion ||
-      !opositionData.temario ||
-      !opositionData.fecha_inicio_instancias ||
-      !opositionData.fecha_fin_instancias ||
-      !opositionData.url_instancias ||
-      opositionData.numero_plazas === ""
-    ) {
-      setInputError("Please fill all fields before submitting.");
-      return;
-    }
 
-    try {
-      await handleAddOposicion(opositionData);
-      navigate("/");
-    } catch (err) {
-      console.error("Failed to add oposicion:", err);
+    // Preparar los datos de la oposición para enviarlos, ya sea para actualizar o crear
+    const formData = {
+      nombre: opositionData.nombre,
+      url_publicacion: opositionData.url_publicacion,
+      fecha_publicacion: opositionData.fecha_publicacion,
+      temario: opositionData.temario,
+      fecha_inicio_instancias: opositionData.fecha_inicio_instancias,
+      fecha_fin_instancias: opositionData.fecha_fin_instancias,
+      url_instancias: opositionData.url_instancias,
+      numero_plazas: opositionData.numero_plazas,
+    };
+
+    // Si hay un ID, es una actualización; de lo contrario, es una adición
+    if (oposition?.id) {
+      try {
+        await handleUpdateOposicion(oposition.id, formData);
+        navigate("/admin-console-oposition");
+      } catch (err) {
+        console.error("Failed to update oposición:", err);
+        setInputError("Error updating the oposición.");
+      }
+    } else {
+      // Validar antes de agregar una nueva oposición
+      if (
+        !formData.nombre ||
+        !formData.url_publicacion ||
+        !formData.fecha_publicacion ||
+        !formData.temario ||
+        !formData.fecha_inicio_instancias ||
+        !formData.fecha_fin_instancias ||
+        !formData.url_instancias ||
+        formData.numero_plazas === ""
+      ) {
+        setInputError("Please fill all fields before submitting.");
+        return;
+      }
+
+      try {
+        await handleAddOposicion(formData);
+        navigate("/admin-console-oposition");
+      } catch (err) {
+        console.error("Failed to add new oposición:", err);
+        setInputError("Error adding the new oposición.");
+      }
     }
   };
 
@@ -75,6 +107,21 @@ const AddOpositionForm = () => {
       ["clean"],
     ],
   };
+
+  useEffect(() => {
+    if (location.state?.oposition) {
+      setOpositionData({
+        nombre: oposition.nombre,
+        url_publicacion: oposition.url_publicacion,
+        fecha_publicacion: oposition.fecha_publicacion.slice(0, 10), // Asegura que la fecha esté en formato 'YYYY-MM-DD'
+        temario: oposition.temario,
+        fecha_inicio_instancias: oposition.fecha_inicio_instancias.slice(0, 10),
+        fecha_fin_instancias: oposition.fecha_fin_instancias.slice(0, 10),
+        url_instancias: oposition.url_instancias,
+        numero_plazas: oposition.numero_plazas.toString(),
+      });
+    }
+  }, [location.state]);
 
   if (loading) <div>loading ...</div>;
   if (error) <div>Ups... algo salio mal</div>;

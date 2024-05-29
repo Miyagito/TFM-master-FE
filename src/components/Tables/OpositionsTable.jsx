@@ -18,11 +18,11 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PrintIcon from "@mui/icons-material/Print";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useOposiciones from "../../hooks/useOposiciones";
 import OpositionDisplay from "../OpositionView/OpositionDisplay";
 import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
 
 const OpositionsTable = () => {
   const navigate = useNavigate();
@@ -58,6 +58,13 @@ const OpositionsTable = () => {
     setOpenDialog(false);
   };
 
+  const handleEditOposition = (e, oposition) => {
+    e.stopPropagation();
+    navigate("/add-oposition-form", {
+      state: { oposition: oposition, title: "Editar Oposición" },
+    });
+  };
+
   const confirmDelete = async () => {
     await handleDeleteOposicion(deleteId);
     if (response && response.status === 200) {
@@ -74,7 +81,7 @@ const OpositionsTable = () => {
       });
     }
     setOpenDialog(false);
-    await loadOposiciones(); // Ensure list is updated
+    await loadOposiciones();
   };
 
   const closeSnackbar = () => {
@@ -109,9 +116,12 @@ const OpositionsTable = () => {
             }}
           >
             <Typography sx={{ flex: 1 }}>{oposition.nombre}</Typography>
-            <Tooltip title="Ver detalles">
-              <IconButton color="primary">
-                <VisibilityIcon />
+            <Tooltip title="Editar Oposición">
+              <IconButton
+                color="primary"
+                onClick={(e) => handleEditOposition(e, oposition)}
+              >
+                <EditIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Imprimir temario">
