@@ -42,13 +42,15 @@ const AdminConsoleOposiciones = () => {
           <Typography variant="h4" sx={{ mt: 4, mb: 4, mr: 10 }}>
             Administración de Oposiciones
           </Typography>
-          <Button
-            variant="contained"
-            onClick={handleAddOposition}
-            sx={{ marginRight: 2 }}
-          >
-            Agregar Oposición
-          </Button>
+          {isAdmin && (
+            <Button
+              variant="contained"
+              onClick={handleAddOposition}
+              sx={{ marginRight: 2 }}
+            >
+              Agregar Oposición
+            </Button>
+          )}
           <Button variant="outlined" onClick={handleBack}>
             Volver
           </Button>
