@@ -93,17 +93,9 @@ const AddLawForm = () => {
             ley={scrapedLaws}
             nombreLey={scrapedLaws.data.nombreLey}
           />
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2, mb: 4 }}>
+          <Box sx={{ display: "flex", justifyContent: "left", mt: 2, mb: 4 }}>
             <Button variant="contained" color="primary" onClick={handleAddLaw}>
               Agregar Ley
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={handleBack}
-              sx={{ ml: 2 }}
-            >
-              Volver
             </Button>
           </Box>
         </Box>
