@@ -37,22 +37,22 @@ const AdminConsole = () => {
             alignItems: "center",
             justifyContent: "center",
             mt: 4,
-            mb: 2,
           }}
         >
-          <Typography variant="h4" sx={{ mt: 4, mb: 10, mr: 10 }}>
+          <Typography variant="h4" sx={{ mr: 5 }}>
             Administración de Leyes
           </Typography>
           <Button variant="outlined" onClick={handleBack}>
             Volver
           </Button>
         </Box>
+        <Divider sx={{ mb: 5, mt: 5 }} />
         <AddLawForm />
         <Box sx={{ my: 4 }}>
+          <Divider sx={{ mb: 5, mt: 5 }} />
           <Typography variant="h6" sx={{ fontWeight: "bold" }}>
             Lista de leyes
           </Typography>
-          <Divider variant="middle" sx={{ mt: 2 }} />
         </Box>
         {loading && <Typography>Cargando...</Typography>}
         {error && <Typography color="error">Error: {error}</Typography>}
