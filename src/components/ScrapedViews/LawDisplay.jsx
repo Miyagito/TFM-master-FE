@@ -4,7 +4,7 @@ import { normalizeLawData } from "../../helpers/nomalizeData";
 import { selectedSectionsState } from "../../atoms/printAtom";
 import { useRecoilState } from "recoil";
 
-const LawDisplay = forwardRef(({ ley, isPrintMode }, ref) => {
+const LawDisplay = forwardRef(({ ley, isPrintMode, nombreLey }, ref) => {
   // Estado para mantener las secciones seleccionadas
   const [selectedSections, setSelectedSections] = useRecoilState(
     selectedSectionsState
@@ -40,6 +40,17 @@ const LawDisplay = forwardRef(({ ley, isPrintMode }, ref) => {
         backgroundColor: "rgb(250, 250, 250)",
       }}
     >
+      {nombreLey && (
+        <Typography
+          variant="h5"
+          style={{
+            textAlign: "left",
+            marginBottom: "30px",
+          }}
+        >
+          {nombreLey}
+        </Typography>
+      )}
       {normalizedLawData.map((item, index) => (
         <Card
           key={index}

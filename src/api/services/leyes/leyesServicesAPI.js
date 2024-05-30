@@ -42,9 +42,9 @@ const deleteLaw = async (id) => {
 };
 
 // Scrapeando una ley
-const scrapeLaw = async (url, nombreLey) => {
+const scrapeLaw = async (url) => {
   try {
-    const response = await axios.post(`${API_URL}/scrape`, url, nombreLey);
+    const response = await axios.post(`${API_URL}/scrape`, url);
     return response.data;
   } catch (error) {
     throw error.response.data;

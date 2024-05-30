@@ -1,7 +1,7 @@
 export const normalizeLawData = (ley) => {
   if (ley && ley.data) {
     // Estructura que contiene `ley.data`
-    return ley.data.map((item) => ({
+    return ley.data.estructura.map((item) => ({
       tipo: item.tipo,
       contenido: item.texto,
       children: item.contenido

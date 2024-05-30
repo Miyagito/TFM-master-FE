@@ -60,10 +60,10 @@ const useLeyes = () => {
     }
   };
 
-  const handleScrapeLaw = async (url, nombreLey) => {
+  const handleScrapeLaw = async (url) => {
     setLoading(true);
     try {
-      const scrapedLaw = await leyesServicesAPI.scrapeLaw({ url, nombreLey });
+      const scrapedLaw = await leyesServicesAPI.scrapeLaw({ url });
       setScrapedLawsState(scrapedLaw);
     } catch (err) {
       setError(err.message || "Error al hacer scraping de la ley");
