@@ -22,14 +22,22 @@ import { useSetRecoilState } from "recoil";
 
 const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const [printMode, setPrintMode] = useState(false);
+  const [expanded, setExpanded] = useState(false); // Estado para controlar la expansión del acordeón
   const { deleteLaw } = useLeyes();
   const navigate = useNavigate();
   const setSelectedSections = useSetRecoilState(selectedSectionsState);
 
   const resetSelections = () => setSelectedSections([]);
 
-  const togglePrintMode = () => {
-    if (printMode) resetSelections();
+  const togglePrintMode = (e) => {
+    e.stopPropagation();
+    if (!expanded) {
+      // Solo permitir cambiar el modo de impresión si está expandido
+      return;
+    }
+    if (printMode) {
+      resetSelections();
+    }
     setPrintMode(!printMode);
   };
 
@@ -40,6 +48,14 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const goToPrintAllLaw = () => {
     if (!printMode) {
       navigate("/print-all-law-view", { state: { ley: ley.contenido } });
+    }
+  };
+
+  const handleExpandChange = (isExpanded) => {
+    setExpanded(isExpanded);
+    if (!isExpanded) {
+      setPrintMode(false);
+      resetSelections();
     }
   };
 
@@ -61,7 +77,10 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
         paddingRight: "24px",
       }}
     >
-      <Accordion TransitionProps={{ timeout: customTransitionDuration }}>
+      <Accordion
+        TransitionProps={{ timeout: customTransitionDuration }}
+        onChange={(e, expanded) => handleExpandChange(expanded)}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls={`panel1a-content-${ley.id}`}
@@ -73,13 +92,17 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
           }}
         >
           <Typography sx={{ flex: 1 }}>{ley.nombre}</Typography>
-          <Tooltip
-            title={printMode ? "Cancelar impresión" : "Preparar para imprimir"}
-          >
-            <IconButton onClick={togglePrintMode} color="primary">
-              {printMode ? <CancelIcon /> : <EditIcon />}
-            </IconButton>
-          </Tooltip>
+          {expanded && (
+            <Tooltip
+              title={
+                printMode ? "Cancelar impresión" : "Preparar para imprimir"
+              }
+            >
+              <IconButton onClick={(e) => togglePrintMode(e)} color="primary">
+                {printMode ? <CancelIcon /> : <EditIcon />}
+              </IconButton>
+            </Tooltip>
+          )}
           {printMode && (
             <Tooltip title="Imprimir vista personalizada de la ley">
               <IconButton onClick={goToPrintView} color="success">

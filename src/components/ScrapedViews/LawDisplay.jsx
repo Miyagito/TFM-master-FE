@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import { Typography, Card, CardContent, Box, Checkbox } from "@mui/material";
 import { normalizeLawData } from "../../helpers/nomalizeData";
 import { selectedSectionsState } from "../../atoms/printAtom";
