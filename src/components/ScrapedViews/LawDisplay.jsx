@@ -4,17 +4,73 @@ import { normalizeLawData } from "../../helpers/nomalizeData";
 import { selectedSectionsState } from "../../atoms/printAtom";
 import { useRecoilState } from "recoil";
 
-const LawDisplay = forwardRef(({ ley, isPrintMode, nombreLey }, ref) => {
+const renderItems = (items) => {
+  return items.map((item, index) => {
+    const content =
+      typeof item.texto === "string"
+        ? item.texto
+        : typeof item.contenido === "string"
+        ? item.contenido
+        : "Contenido no disponible";
+
+    return (
+      <Card
+        key={index}
+        sx={{
+          marginBottom: "10px",
+          width: "100%",
+          boxShadow: "none",
+          border: "none",
+          backgroundColor: "rgb(250, 250, 250)",
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: [
+                "titulo",
+                "titulo_num",
+                "titulo_tit",
+                "capitulo_num",
+                "capitulo_tit",
+                "titulo_preambulo",
+                "centro_redonda",
+              ].includes(item.tipo)
+                ? "center"
+                : "justify",
+              fontSize: ["titulo_preambulo"].includes(item.tipo)
+                ? "1.5rem"
+                : "1.1rem",
+              color: item.tipo === "titulo_preambulo" ? "#123a63" : "#000000",
+              fontWeight: ["articulo", "titulo_tit", "capitulo_tit"].includes(
+                item.tipo
+              )
+                ? "bold"
+                : "normal",
+            }}
+          >
+            {content}
+          </Typography>
+          {item.children && renderItems(item.children)}
+        </CardContent>
+      </Card>
+    );
+  });
+};
+
+const LawDisplay = forwardRef(({ ley, isPrintMode, lawName, loading }, ref) => {
+  /* console.log(normalizeLawData(ley), "NORMALIZED"); */
   // Estado para mantener las secciones seleccionadas
-  const [selectedSections, setSelectedSections] = useRecoilState(
+  /* const [selectedSections, setSelectedSections] = useRecoilState(
     selectedSectionsState
-  );
+  ); */
 
   // Normaliza los datos de la ley
-  const normalizedLawData = normalizeLawData(ley);
+  /* const normalizedLawData = normalizeLawData(ley); */
 
   // Maneja el cambio de selección
-  const handleSelectionChange = (section) => {
+  /*   const handleSelectionChange = (section) => {
     const sectionIndex = selectedSections.findIndex(
       (s) => s.index === section.index
     );
@@ -27,9 +83,10 @@ const LawDisplay = forwardRef(({ ley, isPrintMode, nombreLey }, ref) => {
       newSelections = [...selectedSections, section];
     }
     setSelectedSections(newSelections);
-  };
-
+  }; */
+  if (loading) return <Typography>Cargando...</Typography>;
   if (!ley) return <div>No hay leyes para mostrar</div>;
+
   return (
     <Box
       sx={{
@@ -40,7 +97,7 @@ const LawDisplay = forwardRef(({ ley, isPrintMode, nombreLey }, ref) => {
         backgroundColor: "rgb(250, 250, 250)",
       }}
     >
-      {nombreLey && (
+      {ley && (
         <Typography
           variant="h5"
           style={{
@@ -48,52 +105,32 @@ const LawDisplay = forwardRef(({ ley, isPrintMode, nombreLey }, ref) => {
             marginBottom: "30px",
           }}
         >
-          {nombreLey}
+          {lawName}
         </Typography>
       )}
-      {normalizedLawData.map((item, index) => (
-        <Card
-          key={index}
-          style={{
-            marginBottom: "10px",
-            width: "100%",
-            boxShadow: "none",
-            border: "none",
-            backgroundColor: "rgb(250, 250, 250)",
-          }}
-        >
-          <CardContent>
-            {isPrintMode && (
-              <Checkbox
-                checked={selectedSections.some((s) => s.index === index)}
-                onChange={() => handleSelectionChange({ ...item, index })}
-              />
-            )}
-            <Typography
-              variant="h5"
-              component="h2"
-              style={{
-                textAlign:
-                  item.tipo === "titulo" ||
-                  item.tipo === "titulo_num" ||
-                  item.tipo === "titulo_tit" ||
-                  item.tipo === "capitulo_num" ||
-                  item.tipo === "capitulo_tit"
-                    ? "center"
-                    : "left",
-              }}
-            >
-              {item.contenido}
-            </Typography>
-            {item.children &&
-              item.children.map((content, idx) => (
-                <Typography key={idx} sx={{ textAlign: "justify" }}>
-                  {content.contenido}
-                </Typography>
-              ))}
-          </CardContent>
-        </Card>
-      ))}
+      {/* {normalizedLawData.map((item, index) => ( */}
+      <Card
+        /* key={index} */
+        style={{
+          marginBottom: "10px",
+          width: "100%",
+          boxShadow: "none",
+          border: "none",
+          backgroundColor: "rgb(250, 250, 250)",
+        }}
+      >
+        <CardContent>
+          {isPrintMode &&
+            {
+              /* <Checkbox
+              checked={selectedSections.some((s) => s.index === index)}
+              onChange={() => handleSelectionChange({ ...ley, index })}
+            /> */
+            }}
+          {renderItems(ley.data.estructura)}
+        </CardContent>
+      </Card>
+      {/*     ))} */}
     </Box>
   );
 });

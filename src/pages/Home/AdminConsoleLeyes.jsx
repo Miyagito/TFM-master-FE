@@ -24,8 +24,6 @@ const AdminConsole = () => {
   return (
     <Box
       sx={{
-        height: "100%",
-        maxHeight: "100vh",
         overflowY: "auto",
       }}
     >

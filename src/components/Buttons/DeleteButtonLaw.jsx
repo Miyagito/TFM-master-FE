@@ -8,7 +8,7 @@ const DeleteButtonLaw = ({ lawId, serviceCallBack }) => {
   const handleDelete = async () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar esta ley?")) {
       await serviceCallBack(lawId);
-      loadLaws();
+      /* loadLaws(); */
     }
   };
 

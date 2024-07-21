@@ -2,22 +2,16 @@ import React, { useState } from "react";
 import { TextField, Box, Fab, Typography, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import useLeyes from "../../hooks/useLeyes";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { scrapedLawsState } from "../../atoms/leyesAtom";
 import LoadingComponent from "../Loading/Loading";
 import LawDisplay from "../ScrapedViews/LawDisplay";
 import leyesServicesAPI from "../../api/services/leyes/leyesServicesAPI";
-import { useNavigate } from "react-router-dom";
 
 const AddLawForm = () => {
-  const [url, setUrl] = useState(""); // Estado para guardar la URL introducida por el usuario
-  const scrapedLaws = useRecoilValue(scrapedLawsState);
+  const [url, setUrl] = useState("");
+  const [scrapedLaws, setScrapedLaws] = useRecoilState(scrapedLawsState);
   const { handleScrapeLaw, loading, loadLaws } = useLeyes();
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1);
-  };
 
   const handleScrapedPreview = async () => {
     if (url) {
@@ -32,7 +26,6 @@ const AddLawForm = () => {
   };
 
   const handleAddLaw = async () => {
-    console.log(scrapedLaws, "scraped");
     if (!scrapedLaws || !scrapedLaws.data) {
       console.error("No hay datos de leyes scrapeados para agregar.");
       return;
@@ -46,8 +39,10 @@ const AddLawForm = () => {
 
     try {
       await leyesServicesAPI.addLaw(lawData);
-      loadLaws();
       alert("Ley agregada con éxito!");
+      setUrl("");
+      setScrapedLaws(null);
+      loadLaws();
     } catch (error) {
       console.error("Error al agregar la ley:", error);
       alert("Error al agregar la ley");
@@ -82,22 +77,20 @@ const AddLawForm = () => {
           sx={{
             margin: "20px",
             overflowY: "auto",
-            maxHeight: "900px",
             backgroundColor: "rgb(250, 250, 250)",
+            height: "45vh",
           }}
         >
           <Button variant="contained" color="primary" onClick={handleAddLaw}>
             Agregar Ley
           </Button>
-          <LawDisplay
-            ley={scrapedLaws}
-            nombreLey={scrapedLaws.data.nombreLey}
-          />
-          <Box sx={{ display: "flex", justifyContent: "left", mt: 2, mb: 4 }}>
-            <Button variant="contained" color="primary" onClick={handleAddLaw}>
-              Agregar Ley
-            </Button>
-          </Box>
+          <LawDisplay ley={scrapedLaws} />
+          <Box
+            sx={{ display: "flex", justifyContent: "left", mt: 2, mb: 4 }}
+          ></Box>
+          <Button variant="contained" color="primary" onClick={handleAddLaw}>
+            Agregar Ley
+          </Button>
         </Box>
       )}
     </>

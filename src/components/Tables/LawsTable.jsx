@@ -22,10 +22,16 @@ import { useSetRecoilState } from "recoil";
 
 const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
   const [printMode, setPrintMode] = useState(false);
-  const [expanded, setExpanded] = useState(false); // Estado para controlar la expansión del acordeón
-  const { deleteLaw } = useLeyes();
+  const [expanded, setExpanded] = useState(false);
+  const [lawData, setLawData] = useState(null);
+  const { deleteLaw, loadSingleLaw } = useLeyes();
   const navigate = useNavigate();
   const setSelectedSections = useSetRecoilState(selectedSectionsState);
+
+  const getLey = async (id) => {
+    const data = await loadSingleLaw(id);
+    setLawData(data);
+  };
 
   const resetSelections = () => setSelectedSections([]);
 
@@ -51,11 +57,12 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
     }
   };
 
-  const handleExpandChange = (isExpanded) => {
+  const handleExpandChange = (isExpanded, id) => {
     setExpanded(isExpanded);
     if (!isExpanded) {
       setPrintMode(false);
-      resetSelections();
+      setLawData(null);
+      setSelectedSections([]);
     }
   };
 
@@ -79,7 +86,10 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
     >
       <Accordion
         TransitionProps={{ timeout: customTransitionDuration }}
-        onChange={(e, expanded) => handleExpandChange(expanded)}
+        onChange={async (e, expanded) => {
+          await getLey(ley.id);
+          handleExpandChange(expanded);
+        }}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -134,7 +144,14 @@ const LawsTable = ({ ley, loading, error, showDeleteButton }) => {
           )}
         </AccordionSummary>
         <AccordionDetails>
-          <LawDisplay ley={ley.contenido} isPrintMode={printMode} />
+          {lawData && (
+            <LawDisplay
+              ley={lawData}
+              lawName={ley.nombre}
+              isPrintMode={printMode}
+              loading={loading}
+            />
+          )}
         </AccordionDetails>
       </Accordion>
     </Box>

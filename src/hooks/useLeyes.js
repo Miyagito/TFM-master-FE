@@ -21,7 +21,7 @@ const useLeyes = () => {
       setError(null);
     } catch (err) {
       setError(err.message || "Error al cargar las leyes");
-      setLaws([]); // Ensure laws are reset on error
+      setLaws([]);
     }
     setLoading(false);
   }, [setLaws]);
@@ -30,10 +30,23 @@ const useLeyes = () => {
     await loadLaws();
   };
 
+  const loadSingleLaw = async (id) => {
+    setLoading(true);
+    try {
+      const responseData = await leyesServicesAPI.fetchSingleLaw(id);
+      const dataEstructured = {
+        data: responseData,
+      };
+      return dataEstructured;
+    } catch (error) {
+      setError(error.message || "Error al traer una ley");
+    }
+    setLoading(false);
+  };
+
   const addLaw = async (lawData) => {
     try {
       const response = await leyesServicesAPI.addLaw(lawData);
-      console.log(response, "response add leyes");
       await refreshLaws();
     } catch (err) {
       setError(err.message || "Error al añadir la ley");
@@ -71,12 +84,9 @@ const useLeyes = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    loadLaws();
-  }, [loadLaws]);
-
   return {
     loadLaws,
+    loadSingleLaw,
     addLaw,
     updateLaw,
     deleteLaw,
