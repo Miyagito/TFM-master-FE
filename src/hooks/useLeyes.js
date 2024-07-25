@@ -46,7 +46,7 @@ const useLeyes = () => {
 
   const addLaw = async (lawData) => {
     try {
-      const response = await leyesServicesAPI.addLaw(lawData);
+      await leyesServicesAPI.addLaw(lawData);
       await refreshLaws();
     } catch (err) {
       setError(err.message || "Error al añadir la ley");

@@ -35,6 +35,7 @@ const AddLawForm = () => {
       nombre: scrapedLaws.data.nombreLey,
       url: url,
       contenido: scrapedLaws.data.estructura,
+      metadatos: scrapedLaws.data.metadatos,
     };
 
     try {
